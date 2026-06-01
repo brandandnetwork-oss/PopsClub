@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Anybody:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Hanken+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Anybody", sans-serif;
+  --font-mono: "Space Mono", monospace;
+
+  --color-primary: #ffaced;
+  --color-on-primary: #5d0057;
+  --color-primary-container: #ff16f0;
+  --color-on-primary-container: #51004c;
+  --color-secondary: #bdf4ff;
+  --color-on-secondary: #00363d;
+  --color-secondary-container: #00e3fd;
+  --color-on-secondary-container: #00616d;
+  --color-tertiary: #b0d500;
+  --color-on-tertiary: #2a3400;
+  --color-tertiary-container: #809b00;
+  --color-on-tertiary-container: #242d00;
+  --color-background: #131313;
+  --color-on-background: #e5e2e1;
+  --color-surface-container: #201f1f;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353534;
+}
+
+/* Custom electric urbanism styles and interactions */
+
+.block-shadow {
+  box-shadow: 4px 4px 0px 0px #000000;
+  transition: all 0.15s ease-in-out;
+}
+
+.block-shadow-secondary {
+  box-shadow: 4px 4px 0px 0px var(--color-primary);
+  transition: all 0.15s ease-in-out;
+}
+
+.block-shadow:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.block-shadow-lg {
+  box-shadow: 8px 8px 0px 0px #000000;
+}
+
+.neon-glow-pink {
+  box-shadow: 0 0 20px rgba(255, 22, 240, 0.45);
+}
+
+.neon-glow-lime {
+  box-shadow: 0 0 20px rgba(176, 213, 0, 0.45);
+}
+
+.sticker-rotation-left {
+  transform: rotate(-2deg);
+}
+
+.sticker-rotation-right {
+  transform: rotate(3deg);
+}
+
+.dripping-border {
+  position: relative;
+}
+
+.dripping-border::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 24' preserveAspectRatio='none'%3E%3Cpath d='M0,0v12c30,0,30,8,60,8s30-8,60-8s30,12,60,12s30-12,60-12s30,4,60,4s30-4,60-4s30,8,60,8s30-8,60-8s30,16,60,16s30-16,60-16s30,8,60,8s30-8,60-8s30,12,60,12s30-12,60-12s30,4,60,4s30-4,60-4s30,8,60,8s30-8,60-8V0H0z' fill='%23131313'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  z-index: 10;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #131313;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #353534;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}

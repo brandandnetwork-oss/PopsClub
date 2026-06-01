@@ -1,0 +1,6 @@
+{
+  "name": "POPS CLUB",
+  "description": "POPS CLUB - Rewards, Product Customizer & Street Style Popcorn Club Flavors",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

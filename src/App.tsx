@@ -16,6 +16,8 @@ import FeedView from './components/FeedView';
 import CustomizerView from './components/CustomizerView';
 import ProfileView from './components/ProfileView';
 import CartSidebar from './components/CartSidebar';
+import CustomCursor from './components/CustomCursor';
+import PopcornRain from './components/PopcornRain';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('feed'); // feed, flavors, rewards
@@ -143,7 +145,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background text-on-background font-sans relative">
-      
+
+      {/* Cursor personalizado de la marca (palomita) — global, solo con ratón */}
+      <CustomCursor />
+
+      {/* Lluvia de palomitas por los laterales al hacer scroll / deslizar */}
+      <PopcornRain />
+
       {/* Persistent Navigation Header */}
       <Header 
         activeTab={activeTab}
@@ -239,13 +247,13 @@ export default function App() {
                         <div className="flex gap-2">
                           <button
                             onClick={() => setSelectedProduct(prod)}
-                            className="bg-surface-container-high hover:bg-neutral-800 text-white font-mono text-[10px] uppercase font-bold py-2 px-3 border border-neutral-700 rounded-lg cursor-pointer transition-colors"
+                            className="press-pop bg-surface-container-high hover:bg-neutral-800 text-white font-mono text-[10px] uppercase font-bold py-2 px-3 border border-neutral-700 rounded-lg cursor-pointer transition-colors"
                           >
                             Custom
                           </button>
                           <button
                             onClick={() => handleAddToCart(prod, 'M', false, false)}
-                            className="bg-primary text-on-primary font-mono text-[10px] uppercase font-bold py-2 px-3 border-2 border-black rounded-lg block-shadow active:translate-y-0.5 cursor-pointer"
+                            className="press-pop bg-primary text-on-primary font-mono text-[10px] uppercase font-bold py-2 px-3 border-2 border-black rounded-lg block-shadow active:translate-y-0.5 cursor-pointer"
                           >
                             Añadir M
                           </button>

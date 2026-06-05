@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import logoUrl from '@/assets/logo.png';
 
 interface HeaderProps {
   activeTab: string;
@@ -31,14 +32,11 @@ export default function Header({
           className="flex items-center gap-3 cursor-pointer group select-none"
           id="logo-container"
         >
-          <img 
-            alt="POPS CLUB Logo" 
-            className="h-10 w-auto group-hover:scale-110 active:scale-95 transition-all duration-200" 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuArHR_FToh77xVaH190LrgEcnQqMf31hQ2vZ2ETrc6SiRasxPr97030G5V1klXOao1zRhbJrXQMwgyRxNa5jTGso9em8IWNBSIv_Nnk6sAjhwBwSIL6XnJ1MAI9xuRyneLWbsZffxATFJxH-azAPvwKyXhy3x6tpt4MZ8dEiKgP-in2ff7LKG28QiXfKE2VQI58ZpRt10cPg9nankco9pPlSlJMY7JIJoccOhOAztL551u7OAgxmhFCNguFBgbNUu7Ol6w_b3WqqG8"
+          <img
+            alt="POPS CLUB Logo"
+            className="h-12 md:h-14 w-auto group-hover:scale-110 active:scale-95 transition-all duration-200"
+            src={logoUrl}
           />
-          <span className="font-display text-2xl md:text-3xl font-black text-primary italic tracking-tighter drop-shadow-[2px_2px_0_rgba(0,0,0,1)] group-hover:text-secondary transition-colors duration-200">
-            POPS CLUB
-          </span>
         </div>
 
         {/* Desktop Navigation Links */}
@@ -79,7 +77,7 @@ export default function Header({
           {/* Cart Icon Button with Badges */}
           <button
             onClick={onOpenCart}
-            className="relative flex items-center gap-2 bg-primary-container text-on-primary-container font-mono text-xs uppercase font-bold px-4 py-2 border-2 border-black rounded-lg block-shadow active:translate-y-1 hover:bg-[#ff55eb] transition-all cursor-pointer"
+            className="press-pop relative flex items-center gap-2 bg-primary-container text-on-primary-container font-mono text-xs uppercase font-bold px-4 py-2 border-2 border-black rounded-lg block-shadow active:translate-y-1 hover:bg-[#ff55eb] transition-all cursor-pointer"
             id="btn-header-cart"
           >
             <span className="hidden sm:inline">Carrito</span>

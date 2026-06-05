@@ -3,10 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useRef, useState } from 'react';
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from 'motion/react';
 import { Product } from '../types';
 import { PRODUCTS } from '../data';
+import { Reveal, RevealStagger, RevealItem } from './anim';
+import logoUrl from '@/assets/logo.png';
 
 interface FeedViewProps {
   onSelectProduct: (product: Product) => void;
@@ -27,6 +35,16 @@ export default function FeedView({
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'sweet' | 'salty' | 'gourmet'>('all');
   const [emailSubscribed, setEmailSubscribed] = useState(false);
   const [emailInput, setEmailInput] = useState('');
+
+  // Parallax ligero de la imagen del hero: se desplaza unos px en vertical según
+  // el scroll. Solo transform (GPU). Desactivado con prefers-reduced-motion.
+  const reduceMotion = useReducedMotion();
+  const heroImageRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroImageRef,
+    offset: ['start end', 'end start'],
+  });
+  const heroParallaxY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   // Filter logic
   const filteredProducts = PRODUCTS.filter((product) => {
@@ -60,7 +78,7 @@ export default function FeedView({
     <div className="space-y-12">
       
       {/* 1. Hero Section Showcase */}
-      <section className="relative pt-12 pb-16 px-4 md:px-8 overflow-hidden bg-surface-container rounded-3xl border-4 border-black block-shadow-lg">
+      <Reveal as="section" className="relative pt-12 pb-16 px-4 md:px-8 overflow-hidden bg-surface-container rounded-3xl border-4 border-black block-shadow-lg">
         {/* Drip overlay at bottom of dark banner */}
         <div className="absolute inset-0 bg-radial from-primary/10 via-transparent to-transparent opacity-60 pointer-events-none" />
         
@@ -82,7 +100,7 @@ export default function FeedView({
             <div className="flex flex-wrap gap-4 pt-2">
               <button
                 onClick={() => setActiveTab('flavors')}
-                className="bg-primary text-on-primary font-display font-black tracking-tight text-lg md:text-xl px-8 py-4 rounded-xl border-4 border-black block-shadow hover:bg-secondary-container hover:text-black transition-all cursor-pointer"
+                className="press-pop bg-primary text-on-primary font-display font-black tracking-tight text-lg md:text-xl px-8 py-4 rounded-xl border-4 border-black block-shadow hover:bg-secondary-container hover:text-black transition-all cursor-pointer"
               >
                 Ver Sabores
               </button>
@@ -91,14 +109,18 @@ export default function FeedView({
                   const el = document.getElementById('join-club-section');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="bg-background text-primary font-display font-black tracking-tight text-lg md:text-xl border-4 border-black px-8 py-4 rounded-xl block-shadow hover:bg-surface-container-high transition-all cursor-pointer"
+                className="press-pop bg-background text-primary font-display font-black tracking-tight text-lg md:text-xl border-4 border-black px-8 py-4 rounded-xl block-shadow hover:bg-surface-container-high transition-all cursor-pointer"
               >
                 Únete al Club
               </button>
             </div>
           </div>
 
-          <div className="lg:col-span-12 xl:col-span-5 relative group mt-4 lg:mt-0">
+          <motion.div
+            ref={heroImageRef}
+            style={reduceMotion ? undefined : { y: heroParallaxY }}
+            className="lg:col-span-12 xl:col-span-5 relative group mt-4 lg:mt-0"
+          >
             <div className="absolute -inset-4 bg-primary-container rounded-3xl blur-3xl opacity-20 pointer-events-none" />
             <img 
               alt="Popcorn Products Showcase" 
@@ -111,12 +133,12 @@ export default function FeedView({
                 stars
               </span>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </Reveal>
 
       {/* 2. Interactive Search & Categorization */}
-      <section className="space-y-4">
+      <Reveal as="section" className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch">
           
           {/* Search bar inputs */}
@@ -145,7 +167,7 @@ export default function FeedView({
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-5 py-3 rounded-xl border-2 border-black font-mono text-xs font-bold uppercase tracking-tighter block-shadow whitespace-nowrap cursor-pointer transition-all ${
+                className={`press-pop px-5 py-3 rounded-xl border-2 border-black font-mono text-xs font-bold uppercase tracking-tighter block-shadow whitespace-nowrap cursor-pointer transition-all ${
                   selectedCategory === cat.id
                     ? 'bg-secondary text-on-secondary scale-105'
                     : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest'
@@ -157,10 +179,10 @@ export default function FeedView({
           </div>
 
         </div>
-      </section>
+      </Reveal>
 
       {/* 3. Top Ventas Section Horizontal Slider */}
-      <section className="space-y-6">
+      <Reveal as="section" className="space-y-6">
         <div className="flex justify-between items-end">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold text-primary italic tracking-tight drop-shadow-[2px_2px_0_#000]">
             TOP VENTAS
@@ -170,11 +192,13 @@ export default function FeedView({
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <RevealStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {topVentas.map((prod) => (
-            <div 
+            <RevealItem
               key={`top-${prod.id}`}
               className="bg-surface-container border-4 border-black rounded-2xl block-shadow p-5 relative overflow-hidden group flex flex-col justify-between"
+              whileHover={{ y: -6 }}
+              whileTap={{ scale: 0.98 }}
             >
               <div>
                 <div className="absolute top-3 left-3 z-10 flex gap-2">
@@ -224,7 +248,7 @@ export default function FeedView({
                 </span>
                 <button
                   onClick={() => onAddToCart(prod, 'M', false, false)}
-                  className="bg-primary text-on-primary p-3 border-2 border-black rounded-lg block-shadow active:translate-y-1 hover:bg-secondary hover:text-black transition-all cursor-pointer flex items-center justify-center"
+                  className="press-pop bg-primary text-on-primary p-3 border-2 border-black rounded-lg block-shadow active:translate-y-1 hover:bg-secondary hover:text-black transition-all cursor-pointer flex items-center justify-center"
                   title="Añadir directo tamaño mediano"
                 >
                   <span className="material-symbols-outlined text-lg leading-none font-bold">
@@ -232,13 +256,13 @@ export default function FeedView({
                   </span>
                 </button>
               </div>
-            </div>
+            </RevealItem>
           ))}
-        </div>
-      </section>
+        </RevealStagger>
+      </Reveal>
 
       {/* 4. Nuestros Sabores List */}
-      <section className="space-y-6" id="sabores-completo">
+      <Reveal as="section" className="space-y-6" id="sabores-completo">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold text-secondary italic tracking-tight drop-shadow-[2px_2px_0_#000]">
           NUESTROS SABORES
         </h2>
@@ -251,11 +275,13 @@ export default function FeedView({
             No se encontraron sabores con los filtros actuales. ¡Prueba otro término!
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <RevealStagger className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredProducts.map((prod) => (
-              <div 
+              <RevealItem
                 key={prod.id}
                 className="bg-surface-container-low border-4 border-black rounded-2xl p-4 flex flex-col sm:flex-row gap-4 block-shadow relative overflow-hidden group hover:border-primary transition-all"
+                whileHover={{ y: -6 }}
+                whileTap={{ scale: 0.99 }}
               >
                 {/* Visual Thumbnail */}
                 <div 
@@ -295,27 +321,27 @@ export default function FeedView({
                     <div className="flex gap-2">
                       <button
                         onClick={() => onSelectProduct(prod)}
-                        className="bg-surface-container-high hover:bg-neutral-800 text-on-background px-3 py-1.5 border-2 border-black rounded-lg font-mono text-[10px] uppercase font-bold tracking-tighter cursor-pointer"
+                        className="press-pop bg-surface-container-high hover:bg-neutral-800 text-on-background px-3 py-1.5 border-2 border-black rounded-lg font-mono text-[10px] uppercase font-bold tracking-tighter cursor-pointer"
                       >
                         Personalizar
                       </button>
                       <button
                         onClick={() => onAddToCart(prod, 'M', false, false)}
-                        className="bg-secondary text-on-secondary px-4 py-1.5 border-2 border-black rounded-lg font-mono text-[11px] uppercase font-bold tracking-tighter block-shadow active:translate-y-1 hover:bg-[#a6edff] transition-all cursor-pointer"
+                        className="press-pop bg-secondary text-on-secondary px-4 py-1.5 border-2 border-black rounded-lg font-mono text-[11px] uppercase font-bold tracking-tighter block-shadow active:translate-y-1 hover:bg-[#a6edff] transition-all cursor-pointer"
                       >
                         Añadir
                       </button>
                     </div>
                   </div>
                 </div>
-              </div>
+              </RevealItem>
             ))}
-          </div>
+          </RevealStagger>
         )}
-      </section>
+      </Reveal>
 
       {/* 5. Promotional Claim Sticker Code */}
-      <section className="py-2">
+      <Reveal as="section" className="py-2">
         <div className="bg-primary-container border-4 border-black p-6 rounded-2xl sticker-rotation-left block-shadow relative overflow-hidden">
           <div className="absolute -top-3 -right-3 animate-ping opacity-15 pointer-events-none">
             <span className="material-symbols-outlined text-black text-8xl">celebration</span>
@@ -349,7 +375,7 @@ export default function FeedView({
                 className={`px-8 py-4 rounded-xl border-4 border-black font-display text-lg font-black uppercase tracking-tight block-shadow transition-all cursor-pointer ${
                   promoApplied
                     ? 'bg-neutral-800 text-neutral-400 border-neutral-600 line-through cursor-not-allowed shadow-none'
-                    : 'bg-black text-primary hover:text-white border-primary-container'
+                    : 'press-pop bg-black text-primary hover:text-white border-primary-container'
                 }`}
               >
                 {promoApplied ? 'PROMO ACTIVADA' : 'RECLAMAR OFERTA'}
@@ -357,10 +383,10 @@ export default function FeedView({
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {/* 6. Iconic Packaging Banner Showcase */}
-      <section className="py-8 px-5 bg-surface-container rounded-3xl border-4 border-black block-shadow relative overflow-hidden" id="street-packaging">
+      <Reveal as="section" className="py-8 px-5 bg-surface-container rounded-3xl border-4 border-black block-shadow relative overflow-hidden" id="street-packaging">
         <div className="absolute top-0 right-0 opacity-10 pointer-events-none translate-x-12 -translate-y-12">
           <span className="material-symbols-outlined text-[240px] text-secondary">
             brush
@@ -439,10 +465,10 @@ export default function FeedView({
 
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {/* 7. Join the Club Newsletter Form */}
-      <section className="py-12 px-4 bg-background relative overflow-hidden rounded-2xl border-4 border-black" id="join-club-section">
+      <Reveal as="section" className="py-12 px-4 bg-background relative overflow-hidden rounded-2xl border-4 border-black" id="join-club-section">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffaced 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
         
         <div className="max-w-2xl mx-auto text-center space-y-6 relative z-10">
@@ -469,7 +495,7 @@ export default function FeedView({
             />
             <button 
               type="submit"
-              className="w-full sm:w-auto bg-tertiary text-on-tertiary font-display font-black text-base px-8 py-3 rounded-xl border-4 border-black block-shadow hover:bg-lime-400 active:translate-y-1 transition-all cursor-pointer whitespace-nowrap"
+              className="press-pop w-full sm:w-auto bg-tertiary text-on-tertiary font-display font-black text-base px-8 py-3 rounded-xl border-4 border-black block-shadow hover:bg-lime-400 active:translate-y-1 transition-all cursor-pointer whitespace-nowrap"
             >
               ENTRAR
             </button>
@@ -492,10 +518,10 @@ export default function FeedView({
             )}
           </AnimatePresence>
         </div>
-      </section>
+      </Reveal>
 
       {/* 8. Bento Social Grid Feed */}
-      <section className="space-y-6">
+      <Reveal as="section" className="space-y-6">
         <div className="text-left">
           <p className="font-mono text-xs text-primary uppercase tracking-widest">STREET EXCLUSIVES</p>
           <h2 className="font-display text-3xl font-extrabold text-on-background uppercase italic drop-shadow-[2px_2px_0_#000]">
@@ -550,24 +576,21 @@ export default function FeedView({
           </div>
 
         </div>
-      </section>
+      </Reveal>
 
       {/* 9. Footers identical to specification */}
-      <footer className="bg-surface-container-highest pt-16 pb-10 rounded-t-3xl border-t-8 border-black">
+      <Reveal as="footer" className="bg-surface-container-highest pt-16 pb-10 rounded-t-3xl border-t-8 border-black">
         <div className="px-6 md:px-12">
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 text-left">
             
             <div className="col-span-1 md:col-span-2 space-y-6">
               <div className="flex items-center gap-4">
-                <img 
-                  alt="Logo" 
-                  className="h-16 w-auto" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuArHR_FToh77xVaH190LrgEcnQqMf31hQ2vZ2ETrc6SiRasxPr97030G5V1klXOao1zRhbJrXQMwgyRxNa5jTGso9em8IWNBSIv_Nnk6sAjhwBwSIL6XnJ1MAI9xuRyneLWbsZffxATFJxH-azAPvwKyXhy3x6tpt4MZ8dEiKgP-in2ff7LKG28QiXfKE2VQI58ZpRt10cPg9nankco9pPlSlJMY7JIJoccOhOAztL551u7OAgxmhFCNguFBgbNUu7Ol6w_b3WqqG8"
+                <img
+                  alt="POPS CLUB Logo"
+                  className="h-24 w-auto"
+                  src={logoUrl}
                 />
-                <h3 className="font-display text-2xl md:text-4xl font-black text-primary italic drop-shadow-[2px_2px_0_#000]">
-                  POPS CLUB
-                </h3>
               </div>
               
               <p className="font-sans text-sm text-on-surface-variant max-w-sm">
@@ -596,13 +619,13 @@ export default function FeedView({
                 Explora
               </h4>
               <ul className="space-y-3 font-sans text-xs text-on-surface-variant">
-                <li><a onClick={() => setActiveTab('flavors')} className="hover:text-primary transition-colors cursor-pointer">Nuestros Sabores</a></li>
+                <li><a onClick={() => setActiveTab('flavors')} className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer">Nuestros Sabores</a></li>
                 <li><a onClick={() => {
                   const el = document.getElementById('street-packaging');
                   el?.scrollIntoView({ behavior: 'smooth' });
-                }} className="hover:text-primary transition-colors cursor-pointer">Packaging</a></li>
-                <li><a className="hover:text-primary transition-colors cursor-pointer opacity-70">Ubicaciones (Madrid/Barcelona)</a></li>
-                <li><a className="hover:text-primary transition-colors cursor-pointer opacity-70">Shop Online</a></li>
+                }} className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer">Packaging</a></li>
+                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Ubicaciones (Madrid/Barcelona)</a></li>
+                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Shop Online</a></li>
               </ul>
             </div>
 
@@ -611,10 +634,10 @@ export default function FeedView({
                 Soporte
               </h4>
               <ul className="space-y-3 font-sans text-xs text-on-surface-variant">
-                <li><a className="hover:text-primary transition-colors cursor-pointer opacity-70">Envíos</a></li>
-                <li><a className="hover:text-primary transition-colors cursor-pointer opacity-70">Contacto</a></li>
-                <li><a className="hover:text-primary transition-colors cursor-pointer opacity-70">Preguntas Frecuentes</a></li>
-                <li><a className="hover:text-primary transition-colors cursor-pointer opacity-70">Privacidad & Términos</a></li>
+                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Envíos</a></li>
+                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Contacto</a></li>
+                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Preguntas Frecuentes</a></li>
+                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Privacidad & Términos</a></li>
               </ul>
             </div>
 
@@ -631,7 +654,7 @@ export default function FeedView({
           </div>
 
         </div>
-      </footer>
+      </Reveal>
 
     </div>
   );

@@ -27,6 +27,46 @@
 
 /* Custom electric urbanism styles and interactions */
 
+/*
+ * Cursor personalizado (palomita): cuando <CustomCursor> está activo añade
+ * `.cursor-hidden` a <html> para ocultar el puntero nativo en toda la página
+ * (incluidos enlaces, botones e inputs). Solo se aplica con puntero fino, ya
+ * que el componente no añade la clase en táctil.
+ */
+.cursor-hidden,
+.cursor-hidden * {
+  cursor: none !important;
+}
+
+/*
+ * Microinteracción reutilizable "press-pop":
+ *  - hover: leve escalado hacia arriba (sensación de "vivo").
+ *  - active: escala hacia abajo (feedback táctil al pulsar).
+ * Solo anima `transform` (GPU, sin reflow). Pensada para botones, chips y
+ * enlaces que NO tengan ya un hover de transform propio (rotación, etc.).
+ * Se aplica con `@media (hover: hover)` para no "pegarse" en táctil, y se
+ * desactiva por completo con prefers-reduced-motion.
+ */
+.press-pop {
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .press-pop:hover {
+    transform: scale(1.04);
+  }
+}
+.press-pop:active {
+  transform: scale(0.95);
+}
+@media (prefers-reduced-motion: reduce) {
+  .press-pop,
+  .press-pop:hover,
+  .press-pop:active {
+    transform: none;
+    transition: none;
+  }
+}
+
 .block-shadow {
   box-shadow: 4px 4px 0px 0px #000000;
   transition: all 0.15s ease-in-out;

@@ -7,6 +7,13 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { UserProfile, PopBadge, PastOrder, Product } from '../types';
 import { PRODUCTS } from '../data';
+import {
+  Reveal,
+  RevealStagger,
+  RevealItem,
+  AnimatedCounter,
+  AnimatedProgressBar,
+} from './anim';
 
 interface ProfileViewProps {
   profile: UserProfile;
@@ -42,7 +49,7 @@ export default function ProfileView({
     <div className="space-y-8 max-w-[620px] mx-auto text-left pb-16">
       
       {/* 1. Header Profile segment */}
-      <header className="relative flex flex-col sm:flex-row items-center gap-6 p-6 md:p-8 bg-surface-container rounded-3xl border-4 border-black block-shadow-lg">
+      <Reveal as="header" className="relative flex flex-col sm:flex-row items-center gap-6 p-6 md:p-8 bg-surface-container rounded-3xl border-4 border-black block-shadow-lg">
         {/* Avatar with Crown sticker */}
         <div className="relative">
           <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-black overflow-hidden bg-primary block-shadow relative">
@@ -71,14 +78,14 @@ export default function ProfileView({
         {/* Action Button */}
         <button 
           onClick={() => setShowEdit(true)}
-          className="bg-tertiary hover:bg-lime-400 text-on-tertiary px-6 py-2.5 rounded-xl border-4 border-black block-shadow active:translate-y-1 font-mono text-xs uppercase font-bold cursor-pointer"
+          className="press-pop bg-tertiary hover:bg-lime-400 text-on-tertiary px-6 py-2.5 rounded-xl border-4 border-black block-shadow active:translate-y-1 font-mono text-xs uppercase font-bold cursor-pointer"
         >
           Edit Profile
         </button>
-      </header>
+      </Reveal>
 
       {/* 2. Interactive Loyalty Card section */}
-      <div className="bg-primary-container p-6 sm:p-8 rounded-3xl border-4 border-black block-shadow relative overflow-hidden flex flex-col justify-between">
+      <Reveal className="bg-primary-container p-6 sm:p-8 rounded-3xl border-4 border-black block-shadow relative overflow-hidden flex flex-col justify-between">
         
         {/* Sparks background ornament decoration */}
         <div className="absolute -top-6 -right-6 opacity-25 select-none pointer-events-none">
@@ -94,9 +101,10 @@ export default function ProfileView({
                 Pops Points
               </h2>
               <div className="flex items-baseline gap-2">
-                <span className="font-display text-5xl sm:text-7xl font-black text-white drop-shadow-[4px_4px_0_0_#131313]">
-                  {profile.points.toLocaleString()}
-                </span>
+                <AnimatedCounter
+                  value={profile.points}
+                  className="font-display text-5xl sm:text-7xl font-black text-white drop-shadow-[4px_4px_0_0_#131313]"
+                />
                 <span className="font-mono text-[10px] text-white uppercase opacity-90 font-bold">
                   XP EARNED
                 </span>
@@ -116,16 +124,13 @@ export default function ProfileView({
             </div>
             
             <div className="h-8 w-full bg-black rounded-lg border-2 border-black overflow-hidden relative">
-              <div 
-                className="h-full bg-tertiary relative transition-all duration-500" 
-                style={{ width: '75%' }} 
-              >
+              <AnimatedProgressBar percent={75} className="h-full bg-tertiary relative">
                 {/* Simulated dripping progress edge */}
                 <div className="absolute right-0 top-0 h-full w-4 bg-tertiary overflow-visible">
                   <div className="absolute top-full left-0 w-2 h-4 bg-tertiary rounded-b-full"></div>
                   <div className="absolute top-full left-2 w-1.5 h-2.5 bg-tertiary rounded-b-full"></div>
                 </div>
-              </div>
+              </AnimatedProgressBar>
             </div>
             <p className="font-sans text-xs text-white italic">
               "¡Solo te faltan 250 puntos para conseguir tu Cubo de Madrid Caramel gratis!"
@@ -137,7 +142,7 @@ export default function ProfileView({
         <div className="mt-8 flex flex-wrap gap-3">
           <button 
             onClick={() => setShowQR(true)}
-            className="flex-shrink-0 bg-secondary hover:bg-[#aef5ff] text-on-secondary px-5 py-3 rounded-xl border-4 border-black block-shadow font-mono text-xs uppercase tracking-tight font-black flex items-center gap-2 cursor-pointer"
+            className="press-pop flex-shrink-0 bg-secondary hover:bg-[#aef5ff] text-on-secondary px-5 py-3 rounded-xl border-4 border-black block-shadow font-mono text-xs uppercase tracking-tight font-black flex items-center gap-2 cursor-pointer"
           >
             <span className="material-symbols-outlined text-lg">qr_code_2</span>
             Scan in Store
@@ -148,17 +153,17 @@ export default function ProfileView({
               onUpdatePoints(profile.points + 250);
               // micro reward trigger points
             }}
-            className="flex-shrink-0 bg-black text-primary hover:text-white px-5 py-3 rounded-xl border-4 border-black block-shadow font-mono text-xs uppercase tracking-tight font-black flex items-center gap-2 cursor-pointer"
+            className="press-pop flex-shrink-0 bg-black text-primary hover:text-white px-5 py-3 rounded-xl border-4 border-black block-shadow font-mono text-xs uppercase tracking-tight font-black flex items-center gap-2 cursor-pointer"
           >
             <span className="material-symbols-outlined text-lg">redeem</span>
             Claim Code (+250 XP)
           </button>
         </div>
 
-      </div>
+      </Reveal>
 
       {/* 3. POP BADGES Collection */}
-      <div className="bg-surface-container-high p-6 rounded-3xl border-4 border-black block-shadow flex flex-col">
+      <Reveal className="bg-surface-container-high p-6 rounded-3xl border-4 border-black block-shadow flex flex-col">
         <h3 className="font-display text-2xl text-tertiary italic uppercase font-extrabold mb-5 flex items-center gap-2">
           <span className="material-symbols-outlined text-3xl font-bold" style={{ fontVariationSettings: "'FILL' 1" }}>
             stars
@@ -166,14 +171,16 @@ export default function ProfileView({
           Pop Badges
         </h3>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <RevealStagger className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {badges.map((badge) => (
-            <div 
+            <RevealItem
               key={badge.id}
               onClick={() => setSelectedBadge(badge)}
-              className={`group flex flex-col items-center justify-center p-4 bg-background border-2 rounded-xl block-shadow hover:-translate-y-1 transition-all cursor-pointer ${
-                badge.unlocked 
-                  ? 'border-black opacity-100' 
+              whileHover={{ y: -6 }}
+              whileTap={{ scale: 0.96 }}
+              className={`group flex flex-col items-center justify-center p-4 bg-background border-2 rounded-xl block-shadow transition-all cursor-pointer ${
+                badge.unlocked
+                  ? 'border-black opacity-100'
                   : 'border-neutral-800 border-dashed opacity-55'
               }`}
             >
@@ -189,11 +196,11 @@ export default function ProfileView({
               <span className="font-mono text-[10px] uppercase text-center font-bold text-on-surface line-clamp-1">
                 {badge.name}
               </span>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealStagger>
 
-        <button 
+        <button
           onClick={() => {
             alert("¡Seguiremos añadiendo insignias con cada colaboración mensual de street art!");
           }}
@@ -201,10 +208,10 @@ export default function ProfileView({
         >
           Ver todas las 24 insignias del club
         </button>
-      </div>
+      </Reveal>
 
       {/* 4. PAST ORDER HISTORY LIST */}
-      <div className="space-y-4">
+      <Reveal className="space-y-4">
         <div className="flex items-end justify-between px-2">
           <h3 className="font-display text-2xl text-on-background italic uppercase font-extrabold">
             Historial de Pedidos
@@ -214,11 +221,12 @@ export default function ProfileView({
           </span>
         </div>
 
-        <div className="space-y-3">
+        <RevealStagger className="space-y-3">
           {pastOrders.map((order) => (
-            <div 
+            <RevealItem
               key={order.id}
-              className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-surface-container border-4 border-black rounded-2xl block-shadow hover:translate-x-1 transition-transform text-left"
+              whileHover={{ x: 6 }}
+              className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-surface-container border-4 border-black rounded-2xl block-shadow transition-transform text-left"
             >
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 bg-black border-2 border-primary rounded-xl flex items-center justify-center overflow-hidden">
@@ -250,7 +258,7 @@ export default function ProfileView({
                 
                 <button
                   onClick={() => onReorder(order.itemsDescription)}
-                  className="bg-black hover:bg-neutral-800 text-white p-2 border-2 border-white rounded-lg active:scale-95 transition-all text-xs font-mono uppercase font-black cursor-pointer flex items-center gap-1.5"
+                  className="press-pop bg-black hover:bg-neutral-800 text-white p-2 border-2 border-white rounded-lg active:scale-95 transition-all text-xs font-mono uppercase font-black cursor-pointer flex items-center gap-1.5"
                   title="Pedir de nuevo"
                 >
                   <span className="material-symbols-outlined text-sm font-bold">
@@ -259,10 +267,10 @@ export default function ProfileView({
                   Reorder
                 </button>
               </div>
-            </div>
+            </RevealItem>
           ))}
-        </div>
-      </div>
+        </RevealStagger>
+      </Reveal>
 
       {/* 5. MODAL OVERLAYS */}
       <AnimatePresence>

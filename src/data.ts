@@ -7,62 +7,147 @@ import { Product, PopBadge, PastOrder, UserProfile } from './types';
 
 export const PRODUCTS: Product[] = [
   {
-    id: 'cookies-cream',
-    name: 'Cookies & Cream',
-    tag: 'EXPLOSIÓN DE CHOCOLATE BLANCO',
-    desc: 'White chocolate drizzle meets crushed midnight cocoa cookies. It\'s not just popcorn, it\'s a street legend.',
-    price: 6.20,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC-v2k1KUC3su3l6Uofssw11ZPvhRudhKuR04uaLm-tgDZpuNO0c1pn5H_9KRUtfr8l6n5oVS0vaw1f9r1qtCuj7QWbCKCiAr9W_72sv15KEXBOXA4a_wHL5da0uS_xsFISWmvnMDdSDU6O7-y0eBTAB57BhcPpUPLEK3NLk31Qja6z62bxXmdxY2vo2_KF8GAo8Ldiu4Jslkbw2trTfj6ETOPHQpJ4d3dADYo7-j2zFdzByP84Z8i43YKwzALpJg7PF32_p1FUDEs',
+    id: 'caramelo',
+    name: 'Caramelo',
+    tag: 'EL CLÁSICO DE LA CALLE',
+    desc: 'Palomitas bañadas en caramelo artesanal dorado con un toque irresistible de vainilla. El sabor que lo empezó todo.',
+    price: 5.90,
+    image: '/productos/caramelo.webp',
     isBestSeller: true,
     category: 'sweet'
   },
   {
-    id: 'madrid-caramel',
-    name: 'Madrid Caramel',
-    tag: 'EL CLÁSICO REINVENTADO',
-    desc: 'Artisanal golden, gooey caramel-coated popcorn with subtle sea salt crystals. Sweet, salty, addictive.',
+    id: 'caramelo-salado',
+    name: 'Caramelo Salado',
+    tag: 'DULCE CON ACTITUD',
+    desc: 'La tensión perfecta entre el caramelo suave y la sal marina gruesa. Adictivo desde el primer bocado.',
     price: 5.90,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCHr9h-q8iF6ybh_hvo9DsOUZCiJ8FkZY5E-eMkxIcWf10Y_5N9MNLFQu5TBNn9OnM4HLdGSo-ifPVpRl99TFF_WHdlvI-SKCcxGpNKD8gTdBcbCELdlOo1qk7xs8KYJsvWFoH-OMxSObqzOjJ1ZEcKbKFnefwk3Lyz9XMeG_wdzpq9NaDQI_bqi3jgjuIZiG0cFLN-Dibb7rF6v90xZpuA0cw87SHTIxWZ8izR1sx2Ol64YA4PZ4nDWpYUcLvTH0VdZ5pJ9jaOMV4',
+    image: '/productos/caramelo-salado.webp',
     isHot: true,
     category: 'sweet'
   },
   {
-    id: 'choco-lovers',
-    name: 'Choco Lovers',
-    tag: 'CHOCOLATE + CACAO PURO',
-    desc: 'Double glazed in rich milk chocolate and premium dark cocoa powder. The ultimate chocolate high.',
+    id: 'chocolate-belga',
+    name: 'Chocolate Belga',
+    tag: 'LUJO EN CADA PALOMITA',
+    desc: 'Cobertura de auténtico chocolate belga fundido sobre palomitas crujientes. Puro placer sin disculpas.',
     price: 6.50,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC4RMXHAOTKBwQKoCoqMDVcSdIozfDCWv-hwQqwWNVm341F5qGzP7JkbO9G4T8QnqNmancP8dDFCAvWN5kaeWrG96HKeIb1mODtit8fBkirUEiVDQlkqnJr33GZfqcfk5aufrRxwypsVAZK1hmmeRRHz_Fh1TdQmd8UiII8epf7PlQE7qp58GFusV3aA-5Ihha6ptSwOU41Dd9MbOdb-f1iID92ldTeK_2J1mTQK1l-nhlFa7CerbopVNU1g6rCyF_IQwPoG0e-AZc',
+    image: '/productos/chocolate-belga.webp',
     category: 'sweet'
   },
   {
-    id: 'trufa-parmesano',
-    name: 'Trufa Parmesan',
-    tag: 'GOURMET STREET STYLE',
-    desc: 'High-contrast salted white popcorn dusted in Italian black truffle oil and freshly grated pure Parmigiano-Reggiano.',
-    price: 7.20,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsCF7ji4vCegRzYYPFDjBIVC9XWp7HBajqHZiLm-UBxjg2e1zS4BWMx05ZY-7ZMi3-Hc1a9VEw2qVGUp_3X6sYgtqpW04C4i385gGhMQV8Eo4zDVvj3XJOVXCbKPsv6IC-vT9H245wOuel7JruMWBN72usAcZExfOoTo1sH1ggmNWNnYLFNyJ_15-39MEYA6s73XQMUIZKEinOeE9od2e75P9MUjty8nwaZgN4YB__JOtnUOaaW-Xa-CAvcMczlRwXTVFkcXTKKW4',
-    isHot: true,
-    category: 'gourmet'
+    id: 'canela',
+    name: 'Canela',
+    tag: 'ESPECIAS DE BARRIO',
+    desc: 'Palomitas con un generoso toque de canela de Ceilán y azúcar moreno. Calidez urbana en cada puñado.',
+    price: 5.50,
+    image: '/productos/canela.webp',
+    category: 'sweet'
   },
   {
-    id: 'matcha-white',
-    name: 'Matcha White',
-    tag: 'EQUILIBRIO ZEN URBANO',
-    desc: 'Vibrant green matcha white chocolate popcorn with ceremonial-grade organic Japanese green tea powder.',
-    price: 6.80,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDUifBItmmXYok_Gkf-SfjhatdYcUZkS9eRZCQm1c2ko79Kp9t80OVSg0iZp7SvNr-_z_nB6tBz1adYDPL4391Vv0_Tp7hUoO1saz0Ja80Sz8G42BEgZKJUu_pUEDTijVqihA5BBuEVIzIXhPCIMx61hWW_OYmXvfEU4GrjRQWJFFMQtu4FG9ykziaw2L7OWdC8WuRn6avgfc6VBn7ZmI-bEgLM_DjeCDv5o9hdoz6vRWWPDwwpJvbdKBH0CQzgwOE0NO8R3wkD3BI',
-    category: 'gourmet'
+    id: 'nubes',
+    name: 'Nubes',
+    tag: 'NUBE DE AZÚCAR PURO',
+    desc: 'Palomitas con cobertura de marshmallow esponjoso. Tan ligeras como una nube, tan irresistibles como el azúcar.',
+    price: 5.90,
+    image: '/productos/nubes.webp',
+    isBestSeller: true,
+    category: 'sweet'
   },
   {
-    id: 'lotus-biscoff',
-    name: 'Lotus Biscoff',
-    tag: 'ADICCIÓN DEL REINO UNIDO',
-    desc: 'Sweet, spiced speculoos cookie crumbles swirled with velvety melted biscoff cookie butter drizzle.',
+    id: 'manzana',
+    name: 'Manzana',
+    tag: 'FRUTA CON CARÁCTER',
+    desc: 'El sabor de la manzana verde ácida y la manzana roja dulce fundidos sobre palomitas crujientes.',
+    price: 5.50,
+    image: '/productos/manzana.webp',
+    category: 'sweet'
+  },
+  {
+    id: 'frutas-del-bosque',
+    name: 'Frutas del Bosque',
+    tag: 'EXPLOSIÓN SILVESTRE',
+    desc: 'Frambuesa, mora y arándano en una cobertura intensa y frutal. El bosque llega a la ciudad.',
+    price: 5.90,
+    image: '/productos/frutas-del-bosque.webp',
+    category: 'sweet'
+  },
+  {
+    id: 'mojito',
+    name: 'Mojito',
+    tag: 'CÓCTEL STREET',
+    desc: 'Lima fresca, menta y un toque dulce. La vibra de la terraza en formato palomita. Sin alcohol, con toda la actitud.',
     price: 6.00,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCVz_LjTpRIUxyiuaNfYBS_3nCrhR0Ry21Ls0bxSctXav_lwR4LfYFQpLEvdeVP3FktW1f90jBHFTnFSfeWIKPqSDyyD6WieMEQJHjUjY_QFPhimfI0FeNS_BAMNnOD1Di1p44HAAgM98SrItGGgF9FsCh6qrEX7ZX8CFmUPe0yBvtGkGMaQ-fnxoLMQYX55bv7k2KvhCKHkfgEBgYLlVmEkcIR5y99m31blv3SR3sEN0_WnKW1hoxF8fnORhD246VUcTp8DpSQOlY',
+    image: '/productos/mojito.webp',
     isHot: true,
     category: 'sweet'
+  },
+  {
+    id: 'mantequilla',
+    name: 'Mantequilla',
+    tag: 'EL ORIGINAL DE SIEMPRE',
+    desc: 'Palomitas con mantequilla de verdad, punto justo de sal. El clásico de cine elevado a nivel gourmet.',
+    price: 4.90,
+    image: '/productos/mantequilla.webp',
+    category: 'salty'
+  },
+  {
+    id: 'punto-de-sal',
+    name: 'Punto de Sal',
+    tag: 'MINIMALISMO SALADO',
+    desc: 'Solo sal marina gruesa y la mejor palomita. La pureza del sabor sin artificios. Para los que saben.',
+    price: 4.50,
+    image: '/productos/punto-de-sal.webp',
+    category: 'salty'
+  },
+  {
+    id: 'queso',
+    name: 'Queso',
+    tag: 'CHEESE POWER',
+    desc: 'Cobertura de queso cheddar intenso con un punto de pimentón. El snack salado definitivo de la cultura pop.',
+    price: 5.50,
+    image: '/productos/queso.webp',
+    isHot: true,
+    category: 'salty'
+  },
+  {
+    id: 'jamon',
+    name: 'Jamón',
+    tag: 'ORGULLO IBÉRICO',
+    desc: 'El sabor del jamón serrano en formato palomita. Un bocado audaz, profundo y muy español.',
+    price: 5.90,
+    image: '/productos/jamon.webp',
+    category: 'salty'
+  },
+  {
+    id: 'chili',
+    name: 'Chili',
+    tag: 'FUEGO EN LA BOCA',
+    desc: 'Picante progresivo con chili rojo y un punto de lima. Para los que buscan el límite del sabor.',
+    price: 5.50,
+    image: '/productos/chili.webp',
+    isHot: true,
+    category: 'salty'
+  },
+  {
+    id: 'tex-mex',
+    name: 'Tex-Mex',
+    tag: 'FRONTERA SIN LÍMITES',
+    desc: 'Mezcla de especias texanas y mexicanas: comino, ajo, jalapeño y pimentón ahumado. Pura fusión callejera.',
+    price: 5.90,
+    image: '/productos/tex-mex.webp',
+    isHot: true,
+    category: 'salty'
+  },
+  {
+    id: 'seleccion-espanola',
+    name: 'Selección Española',
+    tag: 'LO MEJOR DE CADA CASA',
+    desc: 'El pack definitivo con una mezcla de los sabores más votados por la comunidad Pops Club. Edición especial.',
+    price: 7.50,
+    image: '/productos/seleccion-espanola.webp',
+    isBestSeller: true,
+    category: 'gourmet'
   }
 ];
 

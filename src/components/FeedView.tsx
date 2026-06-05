@@ -458,63 +458,6 @@ export default function FeedView({
         </div>
       </Reveal>
 
-      {/* 8. Bento Social Grid Feed */}
-      <Reveal as="section" className="space-y-6">
-        <div className="text-left">
-          <p className="font-mono text-xs text-primary uppercase tracking-widest">STREET EXCLUSIVES</p>
-          <h2 className="font-display text-3xl font-extrabold text-on-background uppercase italic drop-shadow-[2px_2px_0_#000]">
-            INSTACRUZ DEL CLUB
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pb-4">
-          
-          <div className="aspect-square rounded-2xl border-4 border-black overflow-hidden block-shadow rotate-[-3deg] hover:rotate-0 transition-transform duration-300 relative group">
-            <img 
-              alt="Social 1" 
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCumLn0a-NQlgjrXOOP3n9Z6seONgvzl397mXSYbMab_l45I10GygOcX9b4u70kc9s8Jxpi3I3hjFWCrQpYGj0Dz06H9oZ93pLlQTJfgGMpgVXyaXSkXvgz6V09yKu9NcJWJ6dldWhnhF4JKvnulOWKyzQt3g5lCLg-xFtguBDbZqwE2I4qmjm1R9Yd1ZiAD-V6_Dz6M3ny2-OwFOY4TqRstG5L989fXjRjXDkTdlT60rLSdfYpng47oncRTzpintEgFrxg0dpiVSY"
-            />
-            <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span className="font-mono text-xs text-white bg-black/80 px-2 py-1 rounded border border-white">#MADRID</span>
-            </div>
-          </div>
-
-          <div className="aspect-square rounded-2xl border-4 border-black overflow-hidden block-shadow translate-y-3 sm:translate-y-6 hover:translate-y-0 transition-transform duration-300 relative group">
-            <img 
-              alt="Social 2" 
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpBoXEz12rOPGiwhwkFw3h3z8je1T-0-u6kZWMgew0BcKMxCi_Z4re4sH0IBgAoVp3pVjHSTyL-zsz8vw_AqOmgUqwvC_80YV7Wigbasr28sos3hpHo6pv7FS2yqoz0Z_5BwSiTSKKGp_9Txi9Tr2v2CXBYoBgTIPnrn9Y65UfSjCrIFROOZpqtpKBvJeC_z17vlcXqtJPOhXv0kScrms8N9SIVQgv7OpR6xZMyI0Q5PPFsggf1wn_rXnW-GiWP97Xku3hexWzcjk"
-            />
-            <div className="absolute inset-0 bg-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span className="font-mono text-xs text-white bg-black/80 px-2 py-1 rounded border border-white">#SKATE</span>
-            </div>
-          </div>
-
-          <div className="aspect-square rounded-2xl border-4 border-black overflow-hidden block-shadow rotate-[3deg] hover:rotate-0 transition-transform duration-300 relative group">
-            <img 
-              alt="Social 3" 
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAaV5R_IuvRBOeRfgeUTpTF5ZZ0JKPVl3xMq0b7XKPg6rfP4eUgmhqKlQgCHxSvmmsYhHEUHVRLjgka3F-o8-wkkNVX7c1lRD7qEgJDE4GvjvzCNHNxrgaDlsmVcAOyVju2lDn0brjpYOtHaYjqtW4W0Uk2rsPo6MCk9x7kS5HhD_k2rfj-uDJw0dlaXEmJDBOLv096a-AYr5dajHMaiKfsAMBfW89ds6s_VmrMpiBxY7v3Ziovw8X68fcGi_GLMAuiDrvFRqWrk4"
-            />
-            <div className="absolute inset-0 bg-tertiary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span className="font-mono text-xs text-white bg-black/80 px-2 py-1 rounded border border-white">#GRAFFITI</span>
-            </div>
-          </div>
-
-          <div className="aspect-square rounded-2xl border-4 border-black overflow-hidden block-shadow -translate-y-3 sm:-translate-y-6 hover:translate-y-0 transition-transform duration-300 relative group">
-            <img 
-              alt="Social 4" 
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT_ZsAxgbEJPSm2f15vLC0GZy6VKv3-zavoxiHc4otZwenvjU41BQSjMr7XwwGghHxZlpU7QOMtUtdhnYzLijSl-m8lU4J6DOhE1Llpd9STgRpNR2UsGTaXQXj133EZ9fNow07TZukHKpM_FIZPkB_t8uokUPfyGE8SymcNt7h06cDJboFXSWZRIFybaB_58v734WkcrZaNB7wLlqWJihM622jdWbwql3ANcu5naurQKlqD5U1khp2ZflBBIYPe2QsrZepxsyu58Y"
-            />
-            <div className="absolute inset-0 bg-[#000]/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span className="font-mono text-xs text-white bg-black/80 px-2 py-1 rounded border border-white">#STREETSTYLE</span>
-            </div>
-          </div>
-
-        </div>
-      </Reveal>
 
       {/* 9. Footers identical to specification */}
       <Reveal as="footer" className="bg-surface-container-highest pt-16 pb-10 rounded-t-3xl border-t-8 border-black">

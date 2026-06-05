@@ -27,7 +27,7 @@ export default function FeedView({
   setActiveTab
 }: FeedViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'sweet' | 'salty' | 'gourmet'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'sweet' | 'salty'>('all');
   const [emailSubscribed, setEmailSubscribed] = useState(false);
   const [emailInput, setEmailInput] = useState('');
 
@@ -58,8 +58,10 @@ export default function FeedView({
     searchQuery ? 'RESULTADOS'
     : selectedCategory === 'sweet' ? 'SABORES DULCES'
     : selectedCategory === 'salty' ? 'SABORES SALADOS'
-    : selectedCategory === 'gourmet' ? 'SABORES GOURMET'
     : 'NUESTROS SABORES';
+
+  // Producto destacado como "edición limitada" en la sección de packaging.
+  const seleccionEspanola = PRODUCTS.find((p) => p.id === 'seleccion-espanola');
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,8 +77,7 @@ export default function FeedView({
   const categoriesList = [
     { id: 'all', label: 'TODOS' },
     { id: 'sweet', label: 'DULCES' },
-    { id: 'salty', label: 'SALADOS' },
-    { id: 'gourmet', label: 'GOURMET' }
+    { id: 'salty', label: 'SALADOS' }
   ] as const;
 
   return (
@@ -365,21 +366,24 @@ export default function FeedView({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center" id="design-points">
             
-            {/* Box Image column with stickers */}
+            {/* Producto destacado: Selección Española (edición limitada) */}
             <div className="relative group">
               <div className="absolute -inset-4 bg-primary rotate-3 rounded-2xl opacity-10 blur-xl pointer-events-none" />
-              <div className="bg-black p-6 rounded-3xl border-4 border-black block-shadow sticker-rotation-left">
-                <img 
-                  alt="POPS Black Box" 
-                  className="w-full h-auto rounded-xl border-4 border-neutral-800 object-cover max-h-[300px]" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6BdRJdkaVXd1ZVFYum4CUDvHdNz-6WaE-uoGeyHs-CfyYR0gWdnoiewnyC7cMzcJ9G_WrI-GIVoHXfKkSoWNPlXgWH3gkMmrtB7TOAiXgSLQXuDwXAW8rIncBA-VeSwNYJquEpYnGXc5U890zV_cnqotFYaNzxNIFE-MwssAWb5Mbj-PYwDFRNy_PpH9dZ7Jvh9Ep-_kfkqAefRYS_WKRkdRLuO04ULiBjWqDO-PrOQVedR9X3ttgkjnUv7l_op73xB4OXvvz81E"
+              <div
+                onClick={() => seleccionEspanola && onSelectProduct(seleccionEspanola)}
+                className="bg-black p-6 rounded-3xl border-4 border-black block-shadow sticker-rotation-left cursor-pointer"
+              >
+                <img
+                  alt="Selección Española"
+                  className="w-full h-auto rounded-xl border-4 border-neutral-800 object-cover max-h-[300px] group-hover:scale-[1.02] transition-transform duration-300"
+                  src="/productos/seleccion-espanola.webp"
                 />
                 <div className="mt-4 flex flex-wrap justify-between items-center gap-x-3 gap-y-2 font-mono">
                   <span className="shrink-0 whitespace-nowrap text-[10px] text-primary tracking-widest uppercase bg-neutral-900 border border-primary px-2 py-1 rounded">
                     EDICIÓN LIMITADA
                   </span>
                   <span className="text-sm font-black text-tertiary uppercase text-right">
-                    STREET BOX x COMUNIDAD
+                    SELECCIÓN ESPAÑOLA
                   </span>
                 </div>
               </div>

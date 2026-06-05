@@ -270,9 +270,11 @@ export default function FeedView({
       </Reveal>
       )}
 
-      {/* 4. Lista filtrada — solo al elegir una categoría o buscar */}
+      {/* 4. Lista filtrada — solo al elegir una categoría o buscar.
+           `instant`: aparece como respuesta a un clic y puede quedar fuera de
+           pantalla, así que se revela al montar (no al hacer scroll). */}
       {(selectedCategory !== 'all' || searchQuery) && (
-      <Reveal as="section" className="space-y-6" id="sabores-completo">
+      <Reveal as="section" instant className="space-y-6" id="sabores-completo">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold text-secondary italic tracking-tight drop-shadow-[2px_2px_0_#000]">
           {listTitle}
         </h2>
@@ -285,7 +287,7 @@ export default function FeedView({
             No se encontraron sabores con los filtros actuales. ¡Prueba otro término!
           </div>
         ) : (
-          <RevealStagger className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <RevealStagger instant className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredProducts.map((prod) => (
               <RevealItem
                 key={prod.id}

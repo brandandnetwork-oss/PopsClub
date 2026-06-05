@@ -33,6 +33,12 @@ interface RevealStaggerProps {
   as?: ElementType;
   className?: string;
   id?: string;
+  /**
+   * Si es true, dispara la cascada al montar en vez de al entrar en viewport.
+   * Para listas que aparecen tras una acción del usuario (filtros) y podrían
+   * quedar fuera de pantalla — así no se quedan invisibles.
+   */
+  instant?: boolean;
 }
 
 /** Contenedor que orquesta la cascada de sus <RevealItem>. */
@@ -41,6 +47,7 @@ export function RevealStagger({
   as = 'div',
   className,
   id,
+  instant = false,
 }: RevealStaggerProps) {
   const reduceMotion = useReducedMotion();
   const MotionTag = motion[as as keyof typeof motion] as typeof motion.div;
@@ -51,8 +58,9 @@ export function RevealStagger({
       className={className}
       variants={reduceMotion ? staggerContainerReduced : staggerContainer}
       initial="hidden"
-      whileInView="visible"
-      viewport={VIEWPORT_ONCE}
+      {...(instant
+        ? { animate: 'visible' }
+        : { whileInView: 'visible', viewport: VIEWPORT_ONCE })}
     >
       {children}
     </MotionTag>

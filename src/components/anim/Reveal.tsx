@@ -27,6 +27,12 @@ interface RevealProps {
   as?: ElementType;
   className?: string;
   id?: string;
+  /**
+   * Si es true, anima al montar en vez de al entrar en viewport. Útil para
+   * contenido que aparece como respuesta a una acción del usuario (p. ej. al
+   * filtrar) y que puede quedar fuera de pantalla: así no se queda invisible.
+   */
+  instant?: boolean;
 }
 
 export default function Reveal({
@@ -36,6 +42,7 @@ export default function Reveal({
   as = 'div',
   className,
   id,
+  instant = false,
 }: RevealProps) {
   const reduceMotion = useReducedMotion();
   const MotionTag = motion[as as keyof typeof motion] as typeof motion.div;
@@ -49,8 +56,9 @@ export default function Reveal({
       className={className}
       variants={activeVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={VIEWPORT_ONCE}
+      {...(instant
+        ? { animate: 'visible' }
+        : { whileInView: 'visible', viewport: VIEWPORT_ONCE })}
       transition={delay ? { delay } : undefined}
     >
       {children}

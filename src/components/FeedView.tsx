@@ -375,7 +375,7 @@ export default function FeedView({
               >
                 <img
                   alt="Selección Española"
-                  className="w-full h-auto rounded-xl border-4 border-neutral-800 object-cover max-h-[300px] group-hover:scale-[1.02] transition-transform duration-300"
+                  className="mx-auto h-auto w-auto max-h-[520px] rounded-xl border-4 border-neutral-800 object-contain group-hover:scale-[1.02] transition-transform duration-300"
                   src="/productos/seleccion-espanola.webp"
                 />
                 <div className="mt-4 flex flex-wrap justify-between items-center gap-x-3 gap-y-2 font-mono">

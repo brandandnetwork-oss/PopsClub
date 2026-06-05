@@ -18,17 +18,11 @@ import logoUrl from '@/assets/logo.png';
 
 interface FeedViewProps {
   onSelectProduct: (product: Product) => void;
-  onAddToCart: (product: Product, size: 'S' | 'M' | 'L', extraWarm: boolean, extraCookies: boolean) => void;
-  onApplyPromo: () => void;
-  promoApplied: boolean;
   setActiveTab: (tab: string) => void;
 }
 
 export default function FeedView({
   onSelectProduct,
-  onAddToCart,
-  onApplyPromo,
-  promoApplied,
   setActiveTab
 }: FeedViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -244,16 +238,13 @@ export default function FeedView({
 
               <div className="flex justify-between items-center mt-5 pt-3 border-t-2 border-neutral-800">
                 <span className="font-display text-2xl font-black text-secondary">
-                  €{prod.price.toFixed(2)}
+                  {prod.price.toFixed(2).replace('.', ',')} €
                 </span>
                 <button
-                  onClick={() => onAddToCart(prod, 'M', false, false)}
-                  className="press-pop bg-primary text-on-primary p-3 border-2 border-black rounded-lg block-shadow active:translate-y-1 hover:bg-secondary hover:text-black transition-all cursor-pointer flex items-center justify-center"
-                  title="Añadir directo tamaño mediano"
+                  onClick={() => onSelectProduct(prod)}
+                  className="press-pop bg-surface-container-high hover:bg-neutral-800 text-white font-mono text-[10px] uppercase font-bold py-2 px-3 border border-neutral-700 rounded-lg cursor-pointer transition-colors"
                 >
-                  <span className="material-symbols-outlined text-lg leading-none font-bold">
-                    add_shopping_cart
-                  </span>
+                  Ver detalle
                 </button>
               </div>
             </RevealItem>
@@ -316,73 +307,20 @@ export default function FeedView({
 
                   <div className="flex justify-between items-center pt-2">
                     <span className="font-display text-xl font-extrabold text-tertiary">
-                      €{prod.price.toFixed(2)}
+                      {prod.price.toFixed(2).replace('.', ',')} €
                     </span>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => onSelectProduct(prod)}
-                        className="press-pop bg-surface-container-high hover:bg-neutral-800 text-on-background px-3 py-1.5 border-2 border-black rounded-lg font-mono text-[10px] uppercase font-bold tracking-tighter cursor-pointer"
-                      >
-                        Personalizar
-                      </button>
-                      <button
-                        onClick={() => onAddToCart(prod, 'M', false, false)}
-                        className="press-pop bg-secondary text-on-secondary px-4 py-1.5 border-2 border-black rounded-lg font-mono text-[11px] uppercase font-bold tracking-tighter block-shadow active:translate-y-1 hover:bg-[#a6edff] transition-all cursor-pointer"
-                      >
-                        Añadir
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => onSelectProduct(prod)}
+                      className="press-pop bg-surface-container-high hover:bg-neutral-800 text-on-background px-3 py-1.5 border-2 border-black rounded-lg font-mono text-[10px] uppercase font-bold tracking-tighter cursor-pointer"
+                    >
+                      Ver detalle
+                    </button>
                   </div>
                 </div>
               </RevealItem>
             ))}
           </RevealStagger>
         )}
-      </Reveal>
-
-      {/* 5. Promotional Claim Sticker Code */}
-      <Reveal as="section" className="py-2">
-        <div className="bg-primary-container border-4 border-black p-6 rounded-2xl sticker-rotation-left block-shadow relative overflow-hidden">
-          <div className="absolute -top-3 -right-3 animate-ping opacity-15 pointer-events-none">
-            <span className="material-symbols-outlined text-black text-8xl">celebration</span>
-          </div>
-          
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 text-left">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="material-symbols-outlined text-tertiary font-bold animate-pulse">
-                  local_activity
-                </span>
-                <span className="font-mono text-xs uppercase font-bold text-tertiary tracking-widest">
-                  OFERTA STREET
-                </span>
-              </div>
-              <h3 className="font-display text-3xl md:text-5xl text-white uppercase italic tracking-tighter leading-none font-black drop-shadow-[2px_2px_0_#131313]">
-                PROMO PACK
-              </h3>
-              <p className="font-display text-lg md:text-2xl text-secondary-container uppercase font-extrabold tracking-tight mt-1">
-                LLEVATE 3 CUBOS Y PAGA 2
-              </p>
-              <p className="font-sans text-xs text-white/80 mt-1 max-w-md">
-                ¡Se aplica de forma automática al Checkout! Llena tu bolsa con tres cubos creados con pasión y el de menor precio te saldrá gratis.
-              </p>
-            </div>
-
-            <div>
-              <button
-                onClick={onApplyPromo}
-                disabled={promoApplied}
-                className={`px-8 py-4 rounded-xl border-4 border-black font-display text-lg font-black uppercase tracking-tight block-shadow transition-all cursor-pointer ${
-                  promoApplied
-                    ? 'bg-neutral-800 text-neutral-400 border-neutral-600 line-through cursor-not-allowed shadow-none'
-                    : 'press-pop bg-black text-primary hover:text-white border-primary-container'
-                }`}
-              >
-                {promoApplied ? 'PROMO ACTIVADA' : 'RECLAMAR OFERTA'}
-              </button>
-            </div>
-          </div>
-        </div>
       </Reveal>
 
       {/* 6. Iconic Packaging Banner Showcase */}

@@ -9,13 +9,14 @@ import { Product } from '../types';
 interface CustomizerViewProps {
   product: Product;
   onBack: () => void;
-  onAddToCart: (product: Product, size: 'S' | 'M' | 'L', extraWarm: boolean, extraCookies: boolean) => void;
+  /** Called when the user clicks the "Únete al Club" CTA. */
+  onJoinClub: () => void;
 }
 
 export default function CustomizerView({
   product,
   onBack,
-  onAddToCart
+  onJoinClub
 }: CustomizerViewProps) {
   const [selectedSize, setSelectedSize] = useState<'S' | 'M' | 'L'>('M');
   const [warmCaramel, setWarmCaramel] = useState(false);
@@ -44,10 +45,6 @@ export default function CustomizerView({
     setCurrentPrice(Number(price.toFixed(2)));
   }, [selectedSize, warmCaramel, extraCookies, product.price]);
 
-  const handleCheckoutClick = () => {
-    onAddToCart(product, selectedSize, warmCaramel, extraCookies);
-    // Go back or show nice micro-feedback
-  };
 
   return (
     <div className="max-w-[520px] mx-auto text-left space-y-8 pb-12">
@@ -258,25 +255,22 @@ export default function CustomizerView({
         </div>
       </section>
 
-      {/* Sticky Bottom Big floating active checkout button */}
+      {/* Price + join club CTA */}
       <section className="bg-surface-container p-4 rounded-2xl border-4 border-black block-shadow relative">
         <div className="flex justify-between items-center gap-4">
           <div className="text-left font-mono">
-            <span className="text-[10px] text-on-surface-variant block uppercase">Precio Total</span>
+            <span className="text-[10px] text-on-surface-variant block uppercase">Precio orientativo</span>
             <span className="text-3xl font-black text-tertiary block">
-              €{currentPrice.toFixed(2)}
+              {currentPrice.toFixed(2).replace('.', ',')} €
             </span>
           </div>
 
           <button
-            onClick={handleCheckoutClick}
-            className="flex-1 bg-primary text-on-primary font-display font-black text-sm md:text-base tracking-tight uppercase py-3.5 rounded-xl border-4 border-black block-shadow hover:bg-secondary hover:text-black transition-all cursor-pointer flex items-center justify-center gap-3"
-            id="btn-customizer-add-cart"
+            onClick={onJoinClub}
+            className="press-pop flex-1 bg-primary text-on-primary font-display font-black text-sm md:text-base tracking-tight uppercase py-3.5 rounded-xl border-4 border-black block-shadow hover:bg-secondary hover:text-black transition-all cursor-pointer flex items-center justify-center gap-3"
           >
-            <span>Añadir al Carrito</span>
-            <span className="material-symbols-outlined text-xl font-bold">
-              shopping_cart
-            </span>
+            <span>Únete al Club</span>
+            <span className="material-symbols-outlined text-xl font-bold">favorite</span>
           </button>
         </div>
       </section>

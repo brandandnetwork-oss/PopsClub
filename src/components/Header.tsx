@@ -3,23 +3,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import logoUrl from '@/assets/logo.png';
 
 interface HeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  cartCount: number;
-  onOpenCart: () => void;
   onOpenProfile: () => void;
 }
 
 export default function Header({
   activeTab,
   setActiveTab,
-  cartCount,
-  onOpenCart,
   onOpenProfile
 }: HeaderProps) {
   return (
@@ -60,10 +54,10 @@ export default function Header({
           ))}
         </div>
 
-        {/* Global Cart & Member Actions */}
+        {/* Header actions */}
         <div className="flex gap-3 items-center" id="header-action-container">
-          {/* User Account Button */}
-          <button 
+          {/* User Account / Rewards Button */}
+          <button
             onClick={onOpenProfile}
             className="p-1 hover:scale-115 active:scale-90 transition-transform text-primary cursor-pointer flex items-center justify-center"
             id="btn-header-profile"
@@ -74,28 +68,20 @@ export default function Header({
             </span>
           </button>
 
-          {/* Cart Icon Button with Badges */}
+          {/* Join Club CTA */}
           <button
-            onClick={onOpenCart}
-            className="press-pop relative flex items-center gap-2 bg-primary-container text-on-primary-container font-mono text-xs uppercase font-bold px-4 py-2 border-2 border-black rounded-lg block-shadow active:translate-y-1 hover:bg-[#ff55eb] transition-all cursor-pointer"
-            id="btn-header-cart"
+            onClick={() => {
+              setActiveTab('feed');
+              setTimeout(() => {
+                document.getElementById('join-club-section')?.scrollIntoView({ behavior: 'smooth' });
+              }, 80);
+            }}
+            className="press-pop flex items-center gap-2 bg-primary-container text-on-primary-container font-mono text-xs uppercase font-bold px-4 py-2 border-2 border-black rounded-lg block-shadow hover:bg-[#ff55eb] transition-all cursor-pointer"
           >
-            <span className="hidden sm:inline">Carrito</span>
-            <span className="material-symbols-outlined text-sm font-bold sm:hidden">
-              shopping_cart
+            <span className="hidden sm:inline">Únete</span>
+            <span className="material-symbols-outlined text-sm font-bold">
+              favorite
             </span>
-            <AnimatePresence mode="popLayout">
-              {cartCount > 0 && (
-                <motion.span
-                  initial={{ scale: 0.4, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.4, opacity: 0 }}
-                  className="absolute -top-2 -right-2 bg-tertiary text-on-tertiary text-[10px] w-5 h-5 rounded-full border border-black flex items-center justify-center font-bold"
-                >
-                  {cartCount}
-                </motion.span>
-              )}
-            </AnimatePresence>
           </button>
         </div>
 

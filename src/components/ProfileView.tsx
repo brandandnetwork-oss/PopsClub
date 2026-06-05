@@ -5,8 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { UserProfile, PopBadge, PastOrder, Product } from '../types';
-import { PRODUCTS } from '../data';
+import { UserProfile, PopBadge, PastOrder } from '../types';
 import {
   Reveal,
   RevealStagger,
@@ -20,7 +19,6 @@ interface ProfileViewProps {
   badges: PopBadge[];
   pastOrders: PastOrder[];
   onUpdatePoints: (newPoints: number) => void;
-  onReorder: (orderDescription: string) => void;
   onSetProfileName: (newName: string) => void;
 }
 
@@ -29,7 +27,6 @@ export default function ProfileView({
   badges,
   pastOrders,
   onUpdatePoints,
-  onReorder,
   onSetProfileName
 }: ProfileViewProps) {
   const [showQR, setShowQR] = useState(false);
@@ -246,26 +243,15 @@ export default function ProfileView({
                 </div>
               </div>
 
-              <div className="mt-3 sm:mt-0 flex items-center justify-between sm:justify-end gap-6 sm:pl-4">
+              <div className="mt-3 sm:mt-0 flex items-center justify-end gap-6 sm:pl-4">
                 <div className="text-left sm:text-right">
                   <span className="block font-display text-lg font-black text-tertiary">
-                    €{order.totalPrice.toFixed(2)}
+                    {order.totalPrice.toFixed(2).replace('.', ',')} €
                   </span>
                   <span className="font-mono text-[10px] text-secondary uppercase font-bold">
                     +{order.pointsAwarded} PTS
                   </span>
                 </div>
-                
-                <button
-                  onClick={() => onReorder(order.itemsDescription)}
-                  className="press-pop bg-black hover:bg-neutral-800 text-white p-2 border-2 border-white rounded-lg active:scale-95 transition-all text-xs font-mono uppercase font-black cursor-pointer flex items-center gap-1.5"
-                  title="Pedir de nuevo"
-                >
-                  <span className="material-symbols-outlined text-sm font-bold">
-                    cycle
-                  </span>
-                  Reorder
-                </button>
               </div>
             </RevealItem>
           ))}

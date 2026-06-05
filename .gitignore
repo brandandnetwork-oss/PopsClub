@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Imágenes originales sin optimizar (las optimizadas viven en public/productos/*.webp)
+assets/productos/

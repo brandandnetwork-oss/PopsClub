@@ -23,6 +23,17 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>('feed'); // feed, flavors, rewards
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
+  // Filtro de categoría del tab "Flavors" (Carta de Sabores)
+  const [flavorsCategory, setFlavorsCategory] = useState<'all' | 'sweet' | 'salty'>('all');
+  const flavorsCategories = [
+    { id: 'all', label: 'Todos' },
+    { id: 'sweet', label: 'Dulces' },
+    { id: 'salty', label: 'Salados' }
+  ] as const;
+  const flavorsFiltered = PRODUCTS.filter(
+    (p) => flavorsCategory === 'all' || p.category === flavorsCategory
+  );
+
   // Profile & loyalty state
   const [profile, setProfile] = useState<UserProfile>(INITIAL_PROFILE);
   const [badges, setBadges] = useState<PopBadge[]>(INITIAL_BADGES);
@@ -107,8 +118,25 @@ export default function App() {
                   </p>
                 </div>
 
+                {/* Filtro de categoría: Todos / Dulces / Salados */}
+                <div className="flex gap-2 items-center overflow-x-auto pb-1">
+                  {flavorsCategories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setFlavorsCategory(cat.id)}
+                      className={`press-pop px-5 py-3 rounded-xl border-2 border-black font-mono text-xs font-bold uppercase tracking-tighter block-shadow whitespace-nowrap cursor-pointer transition-all ${
+                        flavorsCategory === cat.id
+                          ? 'bg-secondary text-on-secondary scale-105'
+                          : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest'
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {PRODUCTS.map((prod) => (
+                  {flavorsFiltered.map((prod) => (
                     <div
                       key={`card-${prod.id}`}
                       className="bg-surface-container border-4 border-black rounded-2xl block-shadow p-5 flex flex-col justify-between group"

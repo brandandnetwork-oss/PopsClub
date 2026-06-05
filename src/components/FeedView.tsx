@@ -49,7 +49,17 @@ export default function FeedView({
     return matchesSearch && matchesCategory;
   });
 
-  const topVentas = PRODUCTS.slice(0, 3);
+  // "Top ventas" = los más vendidos (best sellers). Solo se muestran en el
+  // feed por defecto: filtro TODOS y sin búsqueda activa.
+  const topVentas = PRODUCTS.filter((p) => p.isBestSeller);
+
+  // Título dinámico de la lista filtrada según la categoría / búsqueda.
+  const listTitle =
+    searchQuery ? 'RESULTADOS'
+    : selectedCategory === 'sweet' ? 'SABORES DULCES'
+    : selectedCategory === 'salty' ? 'SABORES SALADOS'
+    : selectedCategory === 'gourmet' ? 'SABORES GOURMET'
+    : 'NUESTROS SABORES';
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -176,7 +186,8 @@ export default function FeedView({
         </div>
       </Reveal>
 
-      {/* 3. Top Ventas Section Horizontal Slider */}
+      {/* 3. Top Ventas — solo en el feed por defecto (TODOS y sin búsqueda) */}
+      {selectedCategory === 'all' && !searchQuery && (
       <Reveal as="section" className="space-y-6">
         <div className="flex justify-between items-end">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold text-primary italic tracking-tight drop-shadow-[2px_2px_0_#000]">
@@ -256,11 +267,13 @@ export default function FeedView({
           ))}
         </RevealStagger>
       </Reveal>
+      )}
 
-      {/* 4. Nuestros Sabores List */}
+      {/* 4. Lista filtrada — solo al elegir una categoría o buscar */}
+      {(selectedCategory !== 'all' || searchQuery) && (
       <Reveal as="section" className="space-y-6" id="sabores-completo">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold text-secondary italic tracking-tight drop-shadow-[2px_2px_0_#000]">
-          NUESTROS SABORES
+          {listTitle}
         </h2>
 
         {filteredProducts.length === 0 ? (
@@ -327,6 +340,7 @@ export default function FeedView({
           </RevealStagger>
         )}
       </Reveal>
+      )}
 
       {/* 6. Iconic Packaging Banner Showcase */}
       <Reveal as="section" className="py-8 px-5 bg-surface-container rounded-3xl border-4 border-black block-shadow relative overflow-hidden" id="street-packaging">

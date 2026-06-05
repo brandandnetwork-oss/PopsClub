@@ -531,7 +531,6 @@ export default function FeedView({
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }} className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer">Packaging</a></li>
                 <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Ubicaciones (Madrid/Barcelona)</a></li>
-                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Shop Online</a></li>
               </ul>
             </div>
 
@@ -540,7 +539,6 @@ export default function FeedView({
                 Soporte
               </h4>
               <ul className="space-y-3 font-sans text-xs text-on-surface-variant">
-                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Envíos</a></li>
                 <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Contacto</a></li>
                 <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Preguntas Frecuentes</a></li>
                 <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Privacidad & Términos</a></li>

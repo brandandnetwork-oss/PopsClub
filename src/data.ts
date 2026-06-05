@@ -173,7 +173,7 @@ export const INITIAL_BADGES: PopBadge[] = [
     name: 'Party Starter',
     icon: 'celebration',
     unlocked: true,
-    description: 'Ordered a Mega Box for delivery!',
+    description: '¡Trajiste POPS CLUB a la fiesta del barrio!',
     color: 'tertiary'
   },
   {

@@ -15,6 +15,7 @@ import { Product } from '../types';
 import { PRODUCTS } from '../data';
 import { Reveal, RevealStagger, RevealItem } from './anim';
 import logoUrl from '@/assets/logo.png';
+import { CATEGORY_LABEL, CATEGORY_CLASSES } from '../utils/categoryBadge';
 
 interface FeedViewProps {
   onSelectProduct: (product: Product) => void;
@@ -207,6 +208,10 @@ export default function FeedView({
                     </span>
                   )}
                 </div>
+                {/* Etiqueta de categoría — esquina superior derecha */}
+                <span className={`absolute top-3 right-3 z-10 font-mono text-[10px] font-black px-2 py-0.5 rounded border-2 border-black shadow-[1px_1px_0_#000] uppercase tracking-wide ${CATEGORY_CLASSES[prod.category]}`}>
+                  {CATEGORY_LABEL[prod.category]}
+                </span>
 
                 {/* Image holder with interactive grow on hover */}
                 <div 
@@ -292,12 +297,12 @@ export default function FeedView({
                     onClick={() => onSelectProduct(prod)}
                     className="cursor-pointer space-y-1"
                   >
-                    <div className="flex justify-between items-start gap-1">
+                    <div className="flex justify-between items-start gap-2">
                       <h3 className="font-display text-lg font-black uppercase text-primary group-hover:text-secondary transition-colors leading-none">
                         {prod.name}
                       </h3>
-                      <span className="font-mono text-[9px] px-1.5 py-0.5 rounded border border-neutral-700 bg-black text-on-surface-variant uppercase">
-                        {prod.category}
+                      <span className={`flex-shrink-0 font-mono text-[9px] font-black px-2 py-0.5 rounded border-2 border-black shadow-[1px_1px_0_#000] uppercase tracking-wide ${CATEGORY_CLASSES[prod.category]}`}>
+                        {CATEGORY_LABEL[prod.category]}
                       </span>
                     </div>
                     <p className="font-sans text-xs text-on-surface-variant line-clamp-2">

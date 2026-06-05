@@ -13,6 +13,7 @@ import { PRODUCTS, INITIAL_PROFILE, INITIAL_BADGES, INITIAL_ORDERS } from './dat
 // Subcomponents
 import Header from './components/Header';
 import FeedView from './components/FeedView';
+import { CATEGORY_LABEL, CATEGORY_CLASSES } from './utils/categoryBadge';
 import CustomizerView from './components/CustomizerView';
 import ProfileView from './components/ProfileView';
 import CustomCursor from './components/CustomCursor';
@@ -127,6 +128,10 @@ export default function App() {
                               HOT
                             </span>
                           )}
+                          {/* Etiqueta de categoría */}
+                          <span className={`absolute top-2 right-2 font-mono text-[9px] font-black px-2 py-0.5 rounded border-2 border-black shadow-[1px_1px_0_#000] uppercase tracking-wide ${CATEGORY_CLASSES[prod.category]}`}>
+                            {CATEGORY_LABEL[prod.category]}
+                          </span>
                         </div>
 
                         <div className="mt-4 text-left space-y-1 select-none">

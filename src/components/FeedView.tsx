@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   motion,
-  AnimatePresence,
   useScroll,
   useTransform,
   useReducedMotion,
@@ -19,6 +18,8 @@ import { CATEGORY_LABEL, CATEGORY_CLASSES } from '../utils/categoryBadge';
 
 interface FeedViewProps {
   onSelectProduct: (product: Product) => void;
+  /** Abre la página "Únete" (formulario de contacto). */
+  onJoinClub: () => void;
 }
 
 /** Desplazamiento suave a una sección de la propia landing. */
@@ -26,12 +27,11 @@ const scrollToId = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
 export default function FeedView({
-  onSelectProduct
+  onSelectProduct,
+  onJoinClub
 }: FeedViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'sweet' | 'salty'>('all');
-  const [emailSubscribed, setEmailSubscribed] = useState(false);
-  const [emailInput, setEmailInput] = useState('');
 
   // Parallax ligero de la imagen del hero: se desplaza unos px en vertical según
   // el scroll. Solo transform (GPU). Desactivado con prefers-reduced-motion.
@@ -60,17 +60,6 @@ export default function FeedView({
 
   // Producto destacado como "edición limitada" en la sección de packaging.
   const seleccionEspanola = PRODUCTS.find((p) => p.id === 'seleccion-espanola');
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (emailInput.trim()) {
-      setEmailSubscribed(true);
-      setTimeout(() => {
-        setEmailSubscribed(false);
-        setEmailInput('');
-      }, 5000);
-    }
-  };
 
   const categoriesList = [
     { id: 'all', label: 'TODOS' },
@@ -109,10 +98,7 @@ export default function FeedView({
                 Ver Sabores
               </button>
               <button
-                onClick={() => {
-                  const el = document.getElementById('join-club-section');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}
+                onClick={onJoinClub}
                 className="press-pop bg-background text-primary font-display font-black tracking-tight text-lg md:text-xl border-4 border-black px-8 py-4 rounded-xl block-shadow hover:bg-surface-container-high transition-all cursor-pointer"
               >
                 Únete al Club
@@ -377,39 +363,17 @@ export default function FeedView({
             Acceso exclusivo a nuevos sabores secretos en la ciudad, invitaciones para eventos clandestinos de skate y arte urbano, y códigos de descuento que solo los miembros conocen.
           </p>
 
-          <form onSubmit={handleSubscribe} className="max-w-md mx-auto space-y-3 sm:space-y-0 sm:flex gap-3">
-            <input 
-              type="email"
-              required
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              placeholder="TU EMAIL AQUÍ..."
-              className="w-full flex-grow bg-surface-container-low border-4 border-black text-on-background font-mono text-xs p-4 rounded-xl focus:ring-2 focus:ring-primary focus:border-black block-shadow"
-            />
-            <button 
-              type="submit"
-              className="press-pop w-full sm:w-auto bg-tertiary text-on-tertiary font-display font-black text-base px-8 py-3 rounded-xl border-4 border-black block-shadow hover:bg-lime-400 active:translate-y-1 transition-all cursor-pointer whitespace-nowrap"
-            >
-              ENTRAR
-            </button>
-          </form>
+          <button
+            onClick={onJoinClub}
+            className="press-pop inline-flex items-center gap-3 bg-tertiary text-on-tertiary font-display font-black text-base md:text-lg px-10 py-4 rounded-xl border-4 border-black block-shadow hover:bg-lime-400 active:translate-y-1 transition-all cursor-pointer"
+          >
+            Únete ahora
+            <span className="material-symbols-outlined text-xl font-bold">favorite</span>
+          </button>
 
           <p className="font-mono text-[10px] text-on-surface-variant uppercase">
             Prometemos no ser pesados, solo sabrosos.
           </p>
-
-          <AnimatePresence>
-            {emailSubscribed && (
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                className="bg-black/80 backdrop-blur-md p-4 rounded-xl border-2 border-tertiary inline-block text-tertiary mt-4 font-mono text-xs font-bold"
-              >
-                🎉 ¡BIENVENIDO LEYENDA! Te acabamos de enviar un mail con tu cupón secreto.
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </Reveal>
 
@@ -469,7 +433,7 @@ export default function FeedView({
                 Soporte
               </h4>
               <ul className="space-y-3 font-sans text-xs text-on-surface-variant">
-                <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Contacto</a></li>
+                <li><a onClick={onJoinClub} className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer">Contacto</a></li>
                 <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Preguntas Frecuentes</a></li>
                 <li><a className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer opacity-70">Privacidad & Términos</a></li>
               </ul>

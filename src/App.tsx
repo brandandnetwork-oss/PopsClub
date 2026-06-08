@@ -10,27 +10,39 @@ import { Product } from './types';
 import Header from './components/Header';
 import FeedView from './components/FeedView';
 import CustomizerView from './components/CustomizerView';
+import UneteView from './components/UneteView';
 import CustomCursor from './components/CustomCursor';
 import PopcornRain from './components/PopcornRain';
 
+type Page = 'home' | 'unete';
+
 export default function App() {
-  // Única landing page. Lo único "navegable" es abrir la ficha de un producto.
+  const [page, setPage] = useState<Page>('home');
+  // En la home, abrir la ficha de un producto.
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   /**
-   * Cierra la ficha de producto (si está abierta) y desplaza a una sección de
-   * la landing. Sin `id` vuelve arriba del todo.
+   * Vuelve a la home (cerrando la ficha de producto) y desplaza a una sección.
+   * Sin `id` sube arriba del todo.
    */
-  const goToSection = (id?: string) => {
+  const goHome = (id?: string) => {
+    setPage('home');
     setSelectedProduct(null);
     if (!id) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    // Esperamos un tick a que la landing vuelva a montarse si veníamos de la ficha.
+    // Esperamos un tick a que la home vuelva a montarse si veníamos de otra vista.
     setTimeout(() => {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     }, 80);
+  };
+
+  /** Abre la página "Únete" (formulario de contacto). */
+  const goUnete = () => {
+    setPage('unete');
+    setSelectedProduct(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -43,20 +55,22 @@ export default function App() {
       <PopcornRain />
 
       <Header
-        onHome={() => goToSection()}
-        onSabores={() => goToSection('sabores-completo')}
-        onJoinClub={() => goToSection('join-club-section')}
+        onHome={() => goHome()}
+        onSabores={() => goHome('sabores-completo')}
+        onJoinClub={goUnete}
       />
 
       <main className="pt-24 pb-16 px-4 md:px-8 max-w-7xl mx-auto min-h-[calc(100vh-160px)]">
-        {selectedProduct ? (
+        {page === 'unete' ? (
+          <UneteView onBack={() => goHome()} />
+        ) : selectedProduct ? (
           <CustomizerView
             product={selectedProduct}
             onBack={() => setSelectedProduct(null)}
-            onJoinClub={() => goToSection('join-club-section')}
+            onJoinClub={goUnete}
           />
         ) : (
-          <FeedView onSelectProduct={setSelectedProduct} />
+          <FeedView onSelectProduct={setSelectedProduct} onJoinClub={goUnete} />
         )}
       </main>
 

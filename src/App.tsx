@@ -55,8 +55,8 @@ export default function App() {
       <PopcornRain />
 
       <Header
+        page={page}
         onHome={() => goHome()}
-        onSabores={() => goHome('sabores-completo')}
         onJoinClub={goUnete}
       />
 

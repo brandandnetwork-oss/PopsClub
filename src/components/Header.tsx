@@ -6,20 +6,15 @@
 import logoUrl from '@/assets/logo.png';
 
 interface HeaderProps {
-  /** Volver al inicio (logo / enlace Home). */
+  /** Página activa, para resaltar la opción actual. */
+  page: 'home' | 'unete';
+  /** Ir al inicio (logo / opción Home). */
   onHome: () => void;
-  /** Desplazar a la sección de sabores. */
-  onSabores: () => void;
-  /** Desplazar al formulario "Únete al Club". */
+  /** Ir a la página "Únete" (formulario de contacto). */
   onJoinClub: () => void;
 }
 
-export default function Header({ onHome, onSabores, onJoinClub }: HeaderProps) {
-  const navLinks = [
-    { label: 'Home', onClick: onHome },
-    { label: 'Sabores', onClick: onSabores },
-  ];
-
+export default function Header({ page, onHome, onJoinClub }: HeaderProps) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b-4 border-black bg-background shadow-[0_4px_0_0_#000]">
       <div className="flex justify-between items-center px-4 md:px-8 py-3 max-w-7xl mx-auto">
@@ -37,27 +32,31 @@ export default function Header({ onHome, onSabores, onJoinClub }: HeaderProps) {
           />
         </div>
 
-        {/* Desktop Navigation Links (anclas de la propia landing) */}
-        <div className="hidden md:flex gap-8 items-center" id="desktop-menu">
-          {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={link.onClick}
-              className="font-mono text-xs uppercase tracking-widest text-on-background hover:text-secondary hover:scale-105 transition-all duration-200 cursor-pointer"
-            >
-              {link.label}
-            </button>
-          ))}
-        </div>
+        {/* Opciones del header: Home + Únete (visibles en todos los tamaños) */}
+        <div className="flex gap-3 sm:gap-5 items-center" id="header-nav">
+          <button
+            onClick={onHome}
+            className={`font-mono text-xs uppercase tracking-widest transition-all duration-200 cursor-pointer ${
+              page === 'home'
+                ? 'text-tertiary border-b-2 border-tertiary pb-1 scale-105'
+                : 'text-on-background hover:text-secondary hover:scale-105'
+            }`}
+          >
+            Home
+          </button>
 
-        {/* Join Club CTA */}
-        <button
-          onClick={onJoinClub}
-          className="press-pop flex items-center gap-2 bg-primary-container text-on-primary-container font-mono text-xs uppercase font-bold px-4 py-2 border-2 border-black rounded-lg block-shadow hover:bg-[#ff55eb] transition-all cursor-pointer"
-        >
-          <span className="hidden sm:inline">Únete</span>
-          <span className="material-symbols-outlined text-sm font-bold">favorite</span>
-        </button>
+          <button
+            onClick={onJoinClub}
+            className={`press-pop flex items-center gap-2 font-mono text-xs uppercase font-bold px-4 py-2 border-2 border-black rounded-lg block-shadow transition-all cursor-pointer ${
+              page === 'unete'
+                ? 'bg-tertiary text-on-tertiary'
+                : 'bg-primary-container text-on-primary-container hover:bg-[#ff55eb]'
+            }`}
+          >
+            <span>Únete</span>
+            <span className="material-symbols-outlined text-sm font-bold">favorite</span>
+          </button>
+        </div>
 
       </div>
     </nav>

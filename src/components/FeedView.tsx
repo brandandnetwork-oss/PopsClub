@@ -19,12 +19,14 @@ import { CATEGORY_LABEL, CATEGORY_CLASSES } from '../utils/categoryBadge';
 
 interface FeedViewProps {
   onSelectProduct: (product: Product) => void;
-  setActiveTab: (tab: string) => void;
 }
 
+/** Desplazamiento suave a una sección de la propia landing. */
+const scrollToId = (id: string) =>
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+
 export default function FeedView({
-  onSelectProduct,
-  setActiveTab
+  onSelectProduct
 }: FeedViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'sweet' | 'salty'>('all');
@@ -49,11 +51,7 @@ export default function FeedView({
     return matchesSearch && matchesCategory;
   });
 
-  // "Top ventas" = los más vendidos (best sellers). Solo se muestran en el
-  // feed por defecto: filtro TODOS y sin búsqueda activa.
-  const topVentas = PRODUCTS.filter((p) => p.isBestSeller);
-
-  // Título dinámico de la lista filtrada según la categoría / búsqueda.
+  // Título dinámico de la lista según la categoría / búsqueda.
   const listTitle =
     searchQuery ? 'RESULTADOS'
     : selectedCategory === 'sweet' ? 'SABORES DULCES'
@@ -105,7 +103,7 @@ export default function FeedView({
             
             <div className="flex flex-wrap gap-4 pt-2">
               <button
-                onClick={() => setActiveTab('flavors')}
+                onClick={() => scrollToId('sabores-completo')}
                 className="press-pop bg-primary text-on-primary font-display font-black tracking-tight text-lg md:text-xl px-8 py-4 rounded-xl border-4 border-black block-shadow hover:bg-secondary-container hover:text-black transition-all cursor-pointer"
               >
                 Ver Sabores
@@ -187,20 +185,27 @@ export default function FeedView({
         </div>
       </Reveal>
 
-      {/* 3. Top Ventas — solo en el feed por defecto (TODOS y sin búsqueda) */}
-      {selectedCategory === 'all' && !searchQuery && (
-      <Reveal as="section" className="space-y-6">
-        <div className="flex justify-between items-end">
+      {/* 3. Nuestros Sabores — catálogo completo con filtro Todos/Dulces/Salados.
+           `instant`: es el contenido principal de la landing, debe verse siempre
+           (no depender del scroll-reveal). */}
+      <Reveal as="section" instant className="space-y-6" id="sabores-completo">
+        <div className="flex justify-between items-end gap-3">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold text-primary italic tracking-tight drop-shadow-[2px_2px_0_#000]">
-            TOP VENTAS
+            {listTitle}
           </h2>
-          <span className="font-mono text-xs text-tertiary uppercase tracking-widest bg-black px-3 py-1 border-2 border-black rounded-md block-shadow">
-            BEST OF THE METRO
+          <span className="font-mono text-xs text-tertiary uppercase tracking-widest bg-black px-3 py-1 border-2 border-black rounded-md block-shadow whitespace-nowrap">
+            {filteredProducts.length} SABORES
           </span>
         </div>
 
-        <RevealStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {topVentas.map((prod) => (
+        {filteredProducts.length === 0 ? (
+          <div className="bg-surface-container border-4 border-dashed border-neutral-700 rounded-2xl p-8 text-center text-on-surface-variant font-sans">
+            <span className="material-symbols-outlined text-4xl text-neutral-600 block mb-2">fmd_bad</span>
+            No se encontraron sabores con los filtros actuales. ¡Prueba otro término!
+          </div>
+        ) : (
+        <RevealStagger instant className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProducts.map((prod) => (
             <RevealItem
               key={`top-${prod.id}`}
               className="bg-surface-container border-4 border-black rounded-2xl block-shadow p-5 relative overflow-hidden group flex flex-col justify-between"
@@ -267,83 +272,8 @@ export default function FeedView({
             </RevealItem>
           ))}
         </RevealStagger>
-      </Reveal>
-      )}
-
-      {/* 4. Lista filtrada — solo al elegir una categoría o buscar.
-           `instant`: aparece como respuesta a un clic y puede quedar fuera de
-           pantalla, así que se revela al montar (no al hacer scroll). */}
-      {(selectedCategory !== 'all' || searchQuery) && (
-      <Reveal as="section" instant className="space-y-6" id="sabores-completo">
-        <h2 className="font-display text-3xl md:text-4xl font-extrabold text-secondary italic tracking-tight drop-shadow-[2px_2px_0_#000]">
-          {listTitle}
-        </h2>
-
-        {filteredProducts.length === 0 ? (
-          <div className="bg-surface-container border-4 border-dashed border-neutral-700 rounded-2xl p-8 text-center text-on-surface-variant font-sans">
-            <span className="material-symbols-outlined text-4xl text-neutral-600 block mb-2">
-              fmd_bad
-            </span>
-            No se encontraron sabores con los filtros actuales. ¡Prueba otro término!
-          </div>
-        ) : (
-          <RevealStagger instant className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredProducts.map((prod) => (
-              <RevealItem
-                key={prod.id}
-                className="bg-surface-container-low border-4 border-black rounded-2xl p-4 flex flex-col sm:flex-row gap-4 block-shadow relative overflow-hidden group hover:border-primary transition-all"
-                whileHover={{ y: -6 }}
-                whileTap={{ scale: 0.99 }}
-              >
-                {/* Visual Thumbnail */}
-                <div 
-                  onClick={() => onSelectProduct(prod)}
-                  className="w-full sm:w-32 h-32 flex-shrink-0 bg-surface-container-highest rounded-xl border-2 border-black overflow-hidden bg-black cursor-pointer"
-                >
-                  <img 
-                    alt={prod.name}
-                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-300"
-                    src={prod.image}
-                  />
-                </div>
-
-                {/* Details */}
-                <div className="flex-grow flex flex-col justify-between text-left space-y-2">
-                  <div 
-                    onClick={() => onSelectProduct(prod)}
-                    className="cursor-pointer space-y-1"
-                  >
-                    <div className="flex justify-between items-start gap-2">
-                      <h3 className="font-display text-lg font-black uppercase text-primary group-hover:text-secondary transition-colors leading-none">
-                        {prod.name}
-                      </h3>
-                      <span className={`flex-shrink-0 font-mono text-[9px] font-black px-2 py-0.5 rounded border-2 border-black shadow-[1px_1px_0_#000] uppercase tracking-wide ${CATEGORY_CLASSES[prod.category]}`}>
-                        {CATEGORY_LABEL[prod.category]}
-                      </span>
-                    </div>
-                    <p className="font-sans text-xs text-on-surface-variant line-clamp-2">
-                      {prod.desc}
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-2">
-                    <span className="font-display text-xl font-extrabold text-tertiary">
-                      {prod.price.toFixed(2).replace('.', ',')} €
-                    </span>
-                    <button
-                      onClick={() => onSelectProduct(prod)}
-                      className="press-pop bg-surface-container-high hover:bg-neutral-800 text-on-background px-3 py-1.5 border-2 border-black rounded-lg font-mono text-[10px] uppercase font-bold tracking-tighter cursor-pointer"
-                    >
-                      Ver detalle
-                    </button>
-                  </div>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealStagger>
         )}
       </Reveal>
-      )}
 
       {/* 6. Iconic Packaging Banner Showcase */}
       <Reveal as="section" className="py-8 px-5 bg-surface-container rounded-3xl border-4 border-black block-shadow relative overflow-hidden" id="street-packaging">
@@ -525,7 +455,7 @@ export default function FeedView({
                 Explora
               </h4>
               <ul className="space-y-3 font-sans text-xs text-on-surface-variant">
-                <li><a onClick={() => setActiveTab('flavors')} className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer">Nuestros Sabores</a></li>
+                <li><a onClick={() => scrollToId('sabores-completo')} className="inline-block hover:text-primary hover:translate-x-1 transition-all cursor-pointer">Nuestros Sabores</a></li>
                 <li><a onClick={() => {
                   const el = document.getElementById('street-packaging');
                   el?.scrollIntoView({ behavior: 'smooth' });
